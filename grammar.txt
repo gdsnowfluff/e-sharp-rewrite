@@ -1,9 +1,0 @@
-log     :   log(string/reference)
-
-set var :   name = value
-
-ref var :   name#
-
-number  :   number$
-
-arith   :   number/reference +-*/ number/reference
