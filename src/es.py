@@ -1,6 +1,8 @@
-variables = {'pi':'fart','why':'yes'}
-keywords = ['print','exit','var','atom','help','all','import']
-imports = []
+import os,sys,platform
+
+variables = {'pi':'fart','why':'yes','e':'ur programming language! lol'}
+keywords = ['print','exit','var','atom','help','all','import','cls']
+imports = ['e']
 
 def lexer(text):
     tokens = ['SOF']
@@ -61,7 +63,7 @@ def lexer(text):
                     tmp = ""
                 tokens.append('clv')
                 tok = ""
-        elif str(tok) in digits:
+        elif str(tok) in digits and iS != True:
             if iN:
                 tok = ""
             elif iN == False:
@@ -135,18 +137,19 @@ def parser(toks):
                     __ver__(toks[i+2],toks[i+3],toks[i+4],i)
                     print(toks[i+1][4:])
                 elif toks[i+1] == 'atom':
-                    b = input('What is your compiler?\n')
-                    if b == 'ei':
-                        print("EI - E Interperator\n\nThe official E compiler.")
-                    elif b == 'gcc':
-                        print('GCC - C Compiler\n\nHow are you using this for E?')
-                    else:
-                        print('Couldn\'t find any information on ',b.upper(),".", sep = "")
+                    print(os.name)
+                    print(sys.platform)
+                    print(sys.argv[0])
+                    print(sys.version.split('\n'))
+                    print(platform.machine())
+                    print('eI')
                 elif toks[i+1] == 'help':
-                    a = open('grammar.txt','r').read()
+                    a = open('grammar.txt').read()
                     print(a)
                 elif toks[i+1] == 'all':
-                    print(keywords)
+                    print(keywords,variables,imports)
+                elif toks[i+1] == 'import':
+                    print(imports)
             elif toks[i] == 'exit':
                 mes = 'Thank you. Goodbye!'
                 if toks[i+1][:3] == 'str':
@@ -170,7 +173,7 @@ def parser(toks):
                 toks[i+3] = None
                 toks[i+4] = None
                 toks[i+5] = None
-            elif toks[i+1] in operands:
+            elif str(toks[i+1]) in operands:
                 a = toks[i][4:]
                 b = toks[i+2][4:]
                 if toks[i][:3] == 'ref':
@@ -179,8 +182,13 @@ def parser(toks):
                     a = variables[toks[i+2][4:]]
                 c = toks[i+1]
                 print(eval(a+c+b))
-            elif toks[i] == 'import':
+            elif toks[i] == 'import' and toks[i-1] != 'print':
                 imports.append(toks[i+1][4:])
+            elif toks[i] == 'cls':
+                if os.name == 'nt':
+                    os.system('cls')
+                else:
+                    os.system('clear')
                     
         i+=1
     return toks
